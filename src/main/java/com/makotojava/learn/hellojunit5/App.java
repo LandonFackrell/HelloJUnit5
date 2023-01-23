@@ -45,9 +45,10 @@ public class App {
     //
     // Hint: if you get stuck, look at the {@link com.makotojava.learn.hellojunit5.solution.App App class}
     //
+    long sum = 0;
     for(long n : operands){
-      ret += n;
+      sum += n;
     }
-    return ret;
+    return sum;
   }
 }
