@@ -35,20 +35,15 @@ public class App {
    *           This is definitely an overreaction, but this is sample
    *           code, son.
    */
-  public long add(long[] operands) {
-    // Compute the sum
-    long ret = Long.MIN_VALUE;
-    // TDD - add this once we run all the unit tests.
-    //
-    // TODO: As an exercise, implement this method so that all of the unit tests
-    /// you write for it pass. Once you do that, you're done!
-    //
-    // Hint: if you get stuck, look at the {@link com.makotojava.learn.hellojunit5.solution.App App class}
-    //
-    long sum = 0;
-    for(long n : operands){
-      sum += n;
+  public long add(long[] operands) throws IllegalArgumentException{
+    if(operands == null){
+      throw new IllegalArgumentException();
     }
-    return sum;
+    // Compute the sum
+    long ret = 0;
+    for(long n : operands){
+      ret += n;
+    }
+    return ret;
   }
 }
