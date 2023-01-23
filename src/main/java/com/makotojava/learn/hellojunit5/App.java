@@ -1,5 +1,7 @@
 package com.makotojava.learn.hellojunit5;
 
+import java.util.Arrays;
+
 /*
  * Copyright 2017 Makoto Consulting Group, Inc.
  * 
@@ -36,7 +38,7 @@ public class App {
    *           code, son.
    */
   public long add(long[] operands) throws IllegalArgumentException{
-    if(operands == null){
+    if(operands == null || Arrays.equals(operands, new long[]{})){
       throw new IllegalArgumentException();
     }
     // Compute the sum
