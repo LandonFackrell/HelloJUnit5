@@ -366,6 +366,8 @@ public class JUnit5AppTest {
    * </ol>
    * 
    */
+  @Nested
+  @DisplayName("Test summing with no operands")
   class JUnit5AppZeroOperandsTest {
 
     /**
@@ -381,12 +383,12 @@ public class JUnit5AppTest {
      * assertThrows()} method).</li>
      * </ol>
      */
+    @Test
+    @DisplayName("Test App.add() with empty arguments")
     public void testAdd_ZeroOperands_EmptyArgument() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app, "app object should not be null");
+
+      Assertions.assertThrows(IllegalArgumentException.class, () -> app.add(new long[]{}));
     }
 
     /**
@@ -403,12 +405,12 @@ public class JUnit5AppTest {
      * <li>The test should fail if the message in the exception is not "Operands argument cannot be null".</li>
      * </ol>
      */
+    @Test
+    @DisplayName("Test add with no arguments")
     public void testAdd_ZeroOperands_NullArgument() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app, "app object should not be null");
+
+      Assertions.assertThrows(IllegalArgumentException.class, () -> app.add(null));
     }
 
   }
