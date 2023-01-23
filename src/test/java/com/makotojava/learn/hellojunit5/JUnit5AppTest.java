@@ -2,8 +2,6 @@ package com.makotojava.learn.hellojunit5;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.Calendar;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -269,7 +267,7 @@ public class JUnit5AppTest {
     @DisplayName("Testing the add funcitonlaity on friday only with lambda")
     public void testAdd_OnlyOnFriday_WithLambda() {
       Assumptions.assumingThat(java.time.LocalDate.now().getDayOfWeek().toString()
-      .equalsIgnoreCase("FRIDAY"),
+        .equalsIgnoreCase("FRIDAY"),
       () -> Assertions.assertEquals(15, app.add(new long[]{1, 2, 3, 4, 5}), 
       "1, 2, 3, 4, and 5 sum to 15. This is only run on fridays"));
     }
@@ -284,6 +282,8 @@ public class JUnit5AppTest {
    * </ol>
    * 
    */
+  @Nested
+  @DisplayName("Single operand test")
   class JUnit5AppSingleOperandTest {
 
     /**
@@ -303,12 +303,22 @@ public class JUnit5AppTest {
      * {@link org.junit.jupiter.api.Assertions#assertAll(org.junit.jupiter.api.function.Executable...) assertAll()}
      * </ol>
      */
+    @Test
+    @DisplayName("sum arrays with one digit")
     public void testAdd_NumbersGt0() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app);
+
+      long[] arr1 = new long[]{1};
+      long[] arr2 = new long[]{0};
+
+      logger.info("Constructed arrays of one positive digit");
+      
+      Assertions.assertAll(
+        () -> Assertions.assertEquals(1, app.add(arr1), "The sum of 1 should be 1"),
+        () -> Assertions.assertEquals(0, app.add(arr2), "The sum of 0 should be 0")
+      );
+
+      logger.info("All assertions passed for one positive digit arrays");
     }
 
     /**
@@ -328,12 +338,22 @@ public class JUnit5AppTest {
      * {@link org.junit.jupiter.api.Assertions#assertAll(org.junit.jupiter.api.function.Executable...) assertAll()}
      * </ol>
      */
+    @Test
+    @DisplayName("Test summing negative one digit arrays")
     public void testAdd_NumbersLt0() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app);
+
+      long[] arr1 = new long[]{-1};
+      long[] arr2 = new long[]{-10};
+
+      logger.info("Constructed arrays of one negative digit");
+      
+      Assertions.assertAll(
+        () -> Assertions.assertEquals(-1, app.add(arr1), "The sum of -1 should be -1"),
+        () -> Assertions.assertEquals(-10, app.add(arr2), "The sum of -10 should be -10")
+      );
+
+      logger.info("All assertions passed for one negative digit arrays");
     }
   }
 
