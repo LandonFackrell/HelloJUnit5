@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
@@ -30,22 +33,35 @@ import org.slf4j.LoggerFactory;
 public class JUnit5AppTest {
 
   // Create a JDK Logger here
+  Logger logger = LoggerFactory.getLogger(getClass());
 
   // Create a fixture for the class under test
+  App app;
 
   // Do something before ANY test is run in this class
+  @BeforeAll
   public static void init() {
   }
 
   // Do something after ALL tests in this class are run
+  @AfterAll
   public static void done() {
   }
 
   // Create an instance of the test class before each @Test method is executed
+  @BeforeEach
+  void beforeEach(){
+    app = new App();
+  }
 
   // Destroy reference to the instance of the test class after each @Test method is executed
+  @AfterEach
+  void afterEach(){
+    app = null;
+  }
 
   // Disabled test
+  @Disabled
   void testNotRun() {
   }
 
@@ -66,12 +82,24 @@ public class JUnit5AppTest {
    * {@link org.junit.jupiter.api.Assertions#assertAll(org.junit.jupiter.api.function.Executable...) assertAll()}
    * </ol>
    */
+  @Test
+  @DisplayName("Test the Add function of positive longs in App.java")
   public void testAdd() {
-    //
-    // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see the
-    // buttery smooth javadoc above.)
-    //
-    fail("Test not implemented!");
+    Assertions.assertNotNull(app);
+
+    long[] arr1 = new long[]{1, 2, 3, 4};
+    long[] arr2 = new long[]{20, 934, 110};
+    long[] arr3 = new long[]{2, 4, 6};
+
+    logger.info("Constructed arrays of positive longs");
+    
+    Assertions.assertAll(
+      () -> Assertions.assertEquals(10, app.add(arr1), "The sum of 1, 2, 3, and 4 should be 10"),
+      () -> Assertions.assertEquals(1064, app.add(arr2), "The sum of 20, 934, and 110 should be 1064"),
+      () -> Assertions.assertEquals(12, app.add(arr3), "The sum of 2, 4, and 6 should be 12")
+    );
+
+    logger.info("All assertions passed for adding positive long arrays");
   }
 
   /**
@@ -92,7 +120,21 @@ public class JUnit5AppTest {
    * </ol>
    * 
    */
+  @Nested
+  @DisplayName("Test the proper summing of negative longs in App.add()")
   class NegativeNumbersTest {
+
+    App app;
+
+    @BeforeEach
+    void setup(){
+      app = new App();
+    }
+
+    @AfterEach
+    void tearDown(){
+      app = null;
+    }
 
     /**
      * testAdd() - Exercises:
@@ -112,12 +154,24 @@ public class JUnit5AppTest {
      * {@link org.junit.jupiter.api.Assertions#assertAll(org.junit.jupiter.api.function.Executable...) assertAll()}
      * </ol>
      */
+    @Test
+    @DisplayName("Test summing of long arrays including negative integers")
     public void testAdd() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app);
+
+      long[] arr1 = new long[]{1, -2, -3, 4};
+      long[] arr2 = new long[]{20, -934, -110};
+      long[] arr3 = new long[]{-2, -4, -6};
+
+      logger.info("Constructed arrays of mixed positive and negative longs");
+      
+      Assertions.assertAll(
+        () -> Assertions.assertEquals(0, app.add(arr1), "The sum of 1, -2, -3, and 4 should be 0"),
+        () -> Assertions.assertEquals(-1024, app.add(arr2), "The sum of 20, -934, and -110 should be -1024"),
+        () -> Assertions.assertEquals(-12, app.add(arr3), "The sum of -2, -4, and -6 should be -12")
+      );
+
+      logger.info("All assertions passed for adding positive and negative long arrays");
     }
   }
 
@@ -130,6 +184,8 @@ public class JUnit5AppTest {
    * </ol>
    * 
    */
+  @Nested
+  @DisplayName("Test summing of positive and negative sums")
   class PositiveAndNegativeNumbersTest {
 
     /**
@@ -150,12 +206,24 @@ public class JUnit5AppTest {
      * {@link org.junit.jupiter.api.Assertions#assertAll(org.junit.jupiter.api.function.Executable...) assertAll()}
      * </ol>
      */
+    @Test
+    @DisplayName("Test adding positive and negative longs")
     public void testAdd() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app);
+
+      long[] arr1 = new long[]{-1, 2, -3, 4};
+      long[] arr2 = new long[]{-20, 934, -110};
+      long[] arr3 = new long[]{-2, -4, 6};
+
+      logger.info("Constructed arrays of mixed positive and negative longs");
+      
+      Assertions.assertAll(
+        () -> Assertions.assertEquals(2, app.add(arr1), "The sum of -1, 2, -3, and 4 should be 2"),
+        () -> Assertions.assertEquals(804, app.add(arr2), "The sum of -20, 934, -110 should be 804"),
+        () -> Assertions.assertEquals(0, app.add(arr3), "The sum of -2, -4, 6 should be 0")
+      );
+
+      logger.info("All assertions passed for adding positive and negative long arrays");
     }
 
     /**
@@ -171,12 +239,14 @@ public class JUnit5AppTest {
      * <li>Ensure the actual sum matches the expected sum.</li>
      * </ol>
      */
+    @Test
+    @DisplayName("Test Add only on friday")
     public void testAdd_OnlyOnFriday() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assumptions.assumeTrue(java.time.LocalDate.now().getDayOfWeek().toString()
+        .equalsIgnoreCase("FRIDAY"));
+
+      Assertions.assertEquals(15, app.add(new long[]{1, 2, 3, 4, 5}), 
+        "1, 2, 3, 4, and 5 sum to 15. This is only run on fridays");
     }
 
     /**
@@ -193,14 +263,14 @@ public class JUnit5AppTest {
      * <li>Ensure the actual sum matches the expected sum.</li>
      * </ol>
      */
+    @Test
+    @DisplayName("Testing the add funcitonlaity on friday only with lambda")
     public void testAdd_OnlyOnFriday_WithLambda() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assumptions.assumingThat(java.time.LocalDate.now().getDayOfWeek().toString()
+        .equalsIgnoreCase("FRIDAY"),
+      () -> Assertions.assertEquals(15, app.add(new long[]{1, 2, 3, 4, 5}), 
+      "1, 2, 3, 4, and 5 sum to 15. This is only run on fridays"));
     }
-
   }
 
   /**
@@ -212,6 +282,8 @@ public class JUnit5AppTest {
    * </ol>
    * 
    */
+  @Nested
+  @DisplayName("Single operand test")
   class JUnit5AppSingleOperandTest {
 
     /**
@@ -231,12 +303,22 @@ public class JUnit5AppTest {
      * {@link org.junit.jupiter.api.Assertions#assertAll(org.junit.jupiter.api.function.Executable...) assertAll()}
      * </ol>
      */
+    @Test
+    @DisplayName("sum arrays with one digit")
     public void testAdd_NumbersGt0() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app);
+
+      long[] arr1 = new long[]{1};
+      long[] arr2 = new long[]{0};
+
+      logger.info("Constructed arrays of one positive digit");
+      
+      Assertions.assertAll(
+        () -> Assertions.assertEquals(1, app.add(arr1), "The sum of 1 should be 1"),
+        () -> Assertions.assertEquals(0, app.add(arr2), "The sum of 0 should be 0")
+      );
+
+      logger.info("All assertions passed for one positive digit arrays");
     }
 
     /**
@@ -256,12 +338,22 @@ public class JUnit5AppTest {
      * {@link org.junit.jupiter.api.Assertions#assertAll(org.junit.jupiter.api.function.Executable...) assertAll()}
      * </ol>
      */
+    @Test
+    @DisplayName("Test summing negative one digit arrays")
     public void testAdd_NumbersLt0() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app);
+
+      long[] arr1 = new long[]{-1};
+      long[] arr2 = new long[]{-10};
+
+      logger.info("Constructed arrays of one negative digit");
+      
+      Assertions.assertAll(
+        () -> Assertions.assertEquals(-1, app.add(arr1), "The sum of -1 should be -1"),
+        () -> Assertions.assertEquals(-10, app.add(arr2), "The sum of -10 should be -10")
+      );
+
+      logger.info("All assertions passed for one negative digit arrays");
     }
   }
 
@@ -274,6 +366,8 @@ public class JUnit5AppTest {
    * </ol>
    * 
    */
+  @Nested
+  @DisplayName("Test summing with no operands")
   class JUnit5AppZeroOperandsTest {
 
     /**
@@ -289,12 +383,12 @@ public class JUnit5AppTest {
      * assertThrows()} method).</li>
      * </ol>
      */
+    @Test
+    @DisplayName("Test App.add() with empty arguments")
     public void testAdd_ZeroOperands_EmptyArgument() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app, "app object should not be null");
+
+      Assertions.assertThrows(IllegalArgumentException.class, () -> app.add(new long[]{}));
     }
 
     /**
@@ -311,12 +405,12 @@ public class JUnit5AppTest {
      * <li>The test should fail if the message in the exception is not "Operands argument cannot be null".</li>
      * </ol>
      */
+    @Test
+    @DisplayName("Test add with no arguments")
     public void testAdd_ZeroOperands_NullArgument() {
-      //
-      // EXERCISE: TODO: ADD CODE HERE (See Javadoc comments for instructions. Use the Javadoc View in Eclipse to see
-      // the buttery smooth javadoc above.)
-      //
-      fail("Test not implemented!");
+      Assertions.assertNotNull(app, "app object should not be null");
+
+      Assertions.assertThrows(IllegalArgumentException.class, () -> app.add(null));
     }
 
   }
