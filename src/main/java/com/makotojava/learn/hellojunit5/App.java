@@ -45,6 +45,9 @@ public class App {
     //
     // Hint: if you get stuck, look at the {@link com.makotojava.learn.hellojunit5.solution.App App class}
     //
+    for(long n : operands){
+      ret += n;
+    }
     return ret;
   }
 }
